@@ -27,13 +27,11 @@ jobs:
           distribution: temurin
           java-version: 17
 
-      - name: Set up Android SDK
-        uses: android-actions/setup-android@v3
-
       - name: Install SDK components
         run: |
-          yes | sdkmanager --licenses > /dev/null
-          sdkmanager "build-tools;36.0.0" "platforms;android-36" "platform-tools" \
+          SDKMANAGER="$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"
+          yes | $SDKMANAGER --licenses > /dev/null || true
+          $SDKMANAGER "build-tools;36.0.0" "platforms;android-36" "platform-tools" \
                      "ndk;27.2.12479018" "cmake;3.22.1"
           echo "ANDROID_NDK_HOME=$ANDROID_HOME/ndk/27.2.12479018" >> $GITHUB_ENV
 
